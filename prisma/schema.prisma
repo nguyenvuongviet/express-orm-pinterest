@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model comments {
+  id           Int       @id @default(autoincrement())
+  user_id      Int
+  image_id     Int
+  comment_date DateTime  @db.Date
+  content      String    @db.VarChar(255)
+  deletedBy    Int       @default(0)
+  isDeleted    Boolean   @default(false)
+  deletedAt    DateTime? @db.Timestamp(0)
+  createdAt    DateTime  @default(now()) @db.Timestamp(0)
+  updatedAt    DateTime  @default(now()) @db.Timestamp(0)
+  users        users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "comments_ibfk_1")
+  images       images    @relation(fields: [image_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "comments_ibfk_2")
+
+  @@index([image_id], map: "image_id")
+  @@index([user_id], map: "user_id")
+}
+
+model images {
+  id           Int            @id @default(autoincrement())
+  image_name   String?        @db.VarChar(255)
+  image_url    String?        @db.VarChar(255)
+  description  String?        @db.VarChar(255)
+  user_id      Int
+  deletedBy    Int            @default(0)
+  isDeleted    Boolean        @default(false)
+  deletedAt    DateTime?      @db.Timestamp(0)
+  createdAt    DateTime       @default(now()) @db.Timestamp(0)
+  updatedAt    DateTime       @default(now()) @db.Timestamp(0)
+  comments     comments[]
+  users        users          @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "images_ibfk_1")
+  saved_images saved_images[]
+
+  @@index([user_id], map: "user_id")
+}
+
+model saved_images {
+  user_id    Int
+  image_id   Int
+  saved_date DateTime  @db.Date
+  deletedBy  Int       @default(0)
+  isDeleted  Boolean   @default(false)
+  deletedAt  DateTime? @db.Timestamp(0)
+  createdAt  DateTime  @default(now()) @db.Timestamp(0)
+  updatedAt  DateTime  @default(now()) @db.Timestamp(0)
+  users      users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "saved_images_ibfk_1")
+  images     images    @relation(fields: [image_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "saved_images_ibfk_2")
+
+  @@id([user_id, image_id])
+  @@index([image_id], map: "image_id")
+}
+
+model users {
+  id           Int            @id @default(autoincrement())
+  email        String         @unique(map: "email") @db.VarChar(255)
+  password     String         @db.VarChar(255)
+  full_name    String?        @db.VarChar(255)
+  age          Int?
+  avatar       String?        @db.VarChar(255)
+  deletedBy    Int            @default(0)
+  isDeleted    Boolean        @default(false)
+  deletedAt    DateTime?      @db.Timestamp(0)
+  createdAt    DateTime       @default(now()) @db.Timestamp(0)
+  updatedAt    DateTime       @default(now()) @db.Timestamp(0)
+  comments     comments[]
+  images       images[]
+  saved_images saved_images[]
+}
