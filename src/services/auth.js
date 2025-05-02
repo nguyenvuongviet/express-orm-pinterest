@@ -117,7 +117,6 @@ const authService = {
   },
 
   getInfo: async (req) => {
-    // Kiểm tra req.user tồn tại
     if (!req.user) {
       throw new UnAuthorizedException("Người dùng chưa được xác thực");
     }

@@ -1,8 +1,8 @@
 import express from "express";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "../common/swagger/init";
-import demoRouter from "./demo";
 import authRouter from "./auth";
+import pinRouter from "./pin";
 
 const rootRouter = express.Router();
 
@@ -14,7 +14,7 @@ rootRouter.get(
   })
 );
 
-rootRouter.use(`/demo`, demoRouter);
 rootRouter.use(`/auth`, authRouter);
+rootRouter.use(`/pins`, pinRouter);
 
 export default rootRouter;

@@ -19,9 +19,6 @@ const protect = async (req, res, next) => {
       where: {
         id: decoded.userId,
       },
-      include: {
-        Roles: true,
-      },
     });
 
     if (!user) throw new UnAuthorizedException(`Không tìm thấy user`);

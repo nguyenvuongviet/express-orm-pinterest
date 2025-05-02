@@ -1,4 +1,5 @@
 import authSSwagger from "./auth";
+import pinSwagger from "./pin";
 
 const swaggerDocument = {
   openapi: "3.1.1",
@@ -27,6 +28,7 @@ const swaggerDocument = {
   },
   paths: {
     ...authSSwagger,
+    ...pinSwagger,
   },
 };
 
