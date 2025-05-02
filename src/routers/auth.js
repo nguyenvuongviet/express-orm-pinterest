@@ -7,7 +7,7 @@ const authRouter = express.Router();
 authRouter.post("/register", authController.register);
 authRouter.post("/login", authController.login);
 authRouter.post("/refresh-token", authController.refreshToken);
-// authRouter.get("/get-info", protect, authController.getInfo);
+authRouter.get("/get-info", protect, authController.getInfo);
 // authRouter.post("/google-login", authController.googleLogin);
 
 export default authRouter;
